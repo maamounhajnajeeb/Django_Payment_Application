@@ -1,0 +1,10 @@
+{% load static %}
+
+<form method="post" action="{% url 'login-api' %}">
+    {% csrf_token %}
+    <input type="text" name="username" >
+    <input type="password" name="password" >
+    <input type="submit" name="submit" >
+</form>
+
+<script src="{% static 'js/login.js' %}"></script>
