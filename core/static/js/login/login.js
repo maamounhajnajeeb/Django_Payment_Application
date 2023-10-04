@@ -20,6 +20,6 @@ form.onsubmit = (e) => {
         body: JSON.stringify(data)
     }).then((response) => response.json())
     .then((data) => {
-        window.sessionStorage.setItem("token", data["token"]);
+        window.localStorage.setItem("token", data["token"]);
     });
 };

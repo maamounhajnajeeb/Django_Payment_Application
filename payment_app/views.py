@@ -1,4 +1,5 @@
 from rest_framework import viewsets, response
+from rest_framework import generics, views
 
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -21,39 +22,49 @@ def get_env_details():
 
 publishable_key, secret_key = get_env_details()
 
-def login(request):
-    return render(request, "login.html", {})
-
 def index(request):
     return render(request, "index.html",
         {"publishable_key":publishable_key})
 
-def charge(request):
-    amount = 5
-    return redirect("../products/1/")
 
-
-class Products(viewsets.ModelViewSet):
+class CreateCharge(views.APIView):
     
-    serializer_class = serializer.ProductsSerializer
-    queryset = models.Products.objects
+    permission_classes = ( )
     
-    def retrieve(self, request, *args, **kwargs):
-        print(request.data)
-        amount = 5
+    def post(self, request, *args, **kwargs):
+        stripe_token = request.data.get("stripeToken")
+        
         stripe.api_key = secret_key
         
         customer = stripe.Customer.create(
-            email="maamoun.haj.najeeb@gmail.com",
+            email="maamoun@gmail.com",
             name="Maamoun",
-            source=request.data.get("stripeToken")
+            source=stripe_token
         )
-        
+
         stripe.Charge.create(
-            customer=customer, amount=amount*100,
-            currency="usd", description="Donation", )
+            customer=customer, amount=8*100,
+            currency="usd", description="testing",
+        )
+
+        return response.Response({
+            "message": "payment done"
+        })
+
+
+class SeeCharges(views.APIView):
+    
+    permission_classes = ( )
+    
+    def get(self, request, *args, **kwargs):
+        stripe.api_key = secret_key
+        
+        customer = stripe.Customer.list(email="maamoun@gmail.com")
+        
+        operations_ids = [obj.id for obj in customer]
         
         return response.Response({
-            "status": "payment done"
+            "number of payment operations": len(customer),
+            "operations_ids": operations_ids,
         })
         

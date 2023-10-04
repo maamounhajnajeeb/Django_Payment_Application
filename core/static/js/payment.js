@@ -1,4 +1,6 @@
-let stripe = {{ publishable_key }}
+let publishable_key = "pk_test_51NkkK1Feq4GSqlxQgeZEDgdKlidDxGI9Lq2zxnHEo7yCwnVbRKKWlTwnU6AswGazL6ZSCuWXgePMi85GUpO6oydE002UjlqE77";
+
+let stripe = Stripe(publishable_key);
 
 let elements = stripe.elements();
 
@@ -53,8 +55,29 @@ function stripTokenHandler(token) {
     hiddenInput.setAttribute("type", "hidden");
     hiddenInput.setAttribute("name", "stripeToken");
     hiddenInput.setAttribute("value", token.id);
-
+    
     form.appendChild(hiddenInput);
+    
+    // const csrfToken = form.firstElementChild.value;
+    // console.log(token.id);
+    // const url = "http://127.0.0.1:8000/payment_app/api/charge/";
+
+    // const data = {
+    //     price: 5,
+    //     product: "name",
+    //     quantity: 5,
+    // };
+
+    // fetch(url, {
+    //     method: "GET",
+    //     headers: {
+    //         'Authorization': `Token ${window.localStorage.getItem("token")}`,
+    //         'Content-Type' : 'application/json',
+    //         'X-CSRFToken' : csrfToken
+    //     },
+        // body: JSON.stringify(data)
+    // }).then((response) => response.json())
+    // .then((data) => console.log(data));
 
     form.submit();
 }

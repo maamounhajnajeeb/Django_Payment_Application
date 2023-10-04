@@ -5,14 +5,15 @@
     <head>
         <title>Buy Me Coffee</title>
         <script src="https://js.stripe.com/v3/"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="{% static 'css/styling.css' %}" />
     </head>
     <body>
-        <form action="{% url 'payment_app:charge' %}" method="post" id="payment-form">
+        <form action="../charge/" method="post" id="payment-form">
             {% csrf_token %}
 
             {% comment %} <input type="number" placeholder="amount"> {% endcomment %}
-            <hr />
+            {% comment %} <hr /> {% endcomment %}
 
             <div class="form-row">
     
